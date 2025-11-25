@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+           apiKey: "AIzaSyD8J_JdPVu8GbYQ2d4jxdoUHcMaW7dfLOo",
+  authDomain: "tstmkm.firebaseapp.com",
+  databaseURL: "https://tstmkm-default-rtdb.firebaseio.com",
+  projectId: "tstmkm",
+  storageBucket: "tstmkm.firebasestorage.app",
+  messagingSenderId: "460458800429",
+  appId: "1:460458800429:web:a8772f9a8cdad9920bcfa4",
+  measurementId: "G-X3PTPXYS4E"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('register-form');
+            const messageElement = document.getElementById('message');
+
+            registerForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                // Basic client-side validation (you can add more checks here)
+                if (!email || !password) {
+                    messageElement.textContent = "Please fill in all fields.";
+                    return;
+                }
+
+                // Firebase user registration
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        // Send email verification
+                        const user = userCredential.user;
+                        user.sendEmailVerification().then(() => {
+                            messageElement.innerHTML = "Registration successful! Please check your email to confirm.";
+                            registerForm.reset();
+                        }).catch(error => {
+                            messageElement.textContent = "Error sending verification email: " + error.message;
+                        });
+                    })
+                    .catch(error => {
+                        messageElement.textContent = "Error: " + error.message;
+                    });
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #8b4513; 
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 350px;
+            color: #fff; 
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #000; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #333; 
+        }
+
+        p.message {
+            text-align: center;
+            color: #ffdddd;
+            margin-top: 15px;
+        }
+
+        p a {
+            color: #000; 
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form id="register-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Register</button>
+        </form>
+        <p class="message" id="message"></p>
+        <p style="text-align:center;">Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+</body>
+</html>

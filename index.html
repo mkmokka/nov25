@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home | Welcome to Our App</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD8J_JdPVu8GbYQ2d4jxdoUHcMaW7dfLOo",
+  authDomain: "tstmkm.firebaseapp.com",
+  databaseURL: "https://tstmkm-default-rtdb.firebaseio.com",
+  projectId: "tstmkm",
+  storageBucket: "tstmkm.firebasestorage.app",
+  messagingSenderId: "460458800429",
+  appId: "1:460458800429:web:a8772f9a8cdad9920bcfa4",
+  measurementId: "G-X3PTPXYS4E"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const welcomeMessage = document.getElementById('welcome-message');
+
+            // Check if the user is logged in
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // If user is logged in, display a welcome message
+                    welcomeMessage.textContent = `Welcome back, ${user.displayName || user.email}!`;
+                    // Hide login and register buttons if user is logged in
+                    loginBtn.style.display = 'none';
+                    registerBtn.style.display = 'none';
+                } else {
+                    // If no user is logged in, show login and register buttons
+                    welcomeMessage.textContent = "Welcome to our app! Please login or register.";
+                }
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: #8b4513;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 400px;
+            color: #fff;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our App</h1>
+        <p id="welcome-message">Loading...</p>
+
+        <button id="login-btn">Login</button>
+        <button id="register-btn">Register</button>
+    </div>
+
+    <script>
+        // Handling button redirects
+        document.getElementById('login-btn').addEventListener('click', function() {
+            window.location.href = 'login.html';  // Redirect to login page
+        });
+
+        document.getElementById('register-btn').addEventListener('click', function() {
+            window.location.href = 'register.html';  // Redirect to register page
+        });
+    </script>
+</body>
+</html>
